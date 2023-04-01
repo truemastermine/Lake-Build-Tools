@@ -1,30 +1,16 @@
-lmake("1.0.0", "build") -- (required version, buildDir)
+lmake("1.0.0", "build")
 
-local lib = project("C++") -- (language)
+local lua = project("C")
 
--- lib:source("libs/lib/main.cpp", "libs/lib/optional.cpp") -- (source files...)
--- lib:sourceDir("libs/lib/src", ".cpp") -- (dir, extension)
--- lib:includeDir("libs/lib/includes") -- (include dir...)
--- lib:define("STATIC_LIB") -- (key, value)
+lua:sourceDir("libs/lua/", ".c")
+lua:includeDir("libs/lua")
 
-local myPro = project("c++")
-myPro:version("cxx17") -- (language version)
 
-myPro:sourceDir("src", ".cpp")
-myPro:includeDir("includes")
-myPro:link(lib) -- (project...)
--- myPro:staticLink(lib) -- (project...)
--- myPro:sharedLink(lib) -- (project...)
--- myPro:moduleLink(lib) -- (project...) ??
+local lake = project("c++")
+lake:version("cxx17")
 
-myPro:testDir("test")
-myPro:buildTest()
+lake:sourceDir("src", ".cpp")
+lake:includeDir("includes")
+lake:link(lua)
 
-myPro:build("main") -- (filename, {win32 = false, macosx_bundle = false})
--- message("DONE") -- alias of print
-message("error", "Print: {}", "Hello World!") -- (mode, fstring, ...) print = message(nil, ...)
-
-store("inctes", "include test", true, false) -- (id, name, default, override)
-if get("inctes") then
-    include("test", true) -- (path, optional) execute the following lmake file
-end
+lake:build("LakeBin.o")
