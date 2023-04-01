@@ -1,6 +1,6 @@
 -- TODO: add_custom_command, cmake_path, file, find_..., add_compile_options
 includeg() -- Protect when included
-lmake("1.0.0", "build") -- (required version, buildDir)
+lmake("1.0.0", "build") -- (required version, buildDir) major.minor.patch.indev
 
 local lib = project("C++") -- (language)
 
@@ -16,10 +16,7 @@ eval("echo 'Hello, World!'") -- (cmd, continueOnErr)
 
 myPro:sourceDir("src", ".cpp")
 myPro:includeDir("includes")
-myPro:link(lib) -- (project...)
--- myPro:staticLink(lib) -- (project...)
--- myPro:sharedLink(lib) -- (project...)
--- myPro:moduleLink(lib) -- (project...) ??
+myPro:link("static", lib) -- (type?, project...)
 
 myPro:testDir("test")
 myPro:buildTest()
