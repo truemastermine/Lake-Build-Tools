@@ -5,9 +5,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 
 
+# Lua
+FILE(GLOB LUA_SRC libs/lua/*.c)
+add_library(Lua ${LUA_SRC})
+target_include_directories(Lua PUBLIC libs/lua)
 
 
-
+# Lake
 project(LAKE)
 add_executable(LAKE src/main.cpp)
-target_include_directories(LAKE PRIVATE include)
+target_include_directories(LAKE PRIVATE include libs/sol/include)

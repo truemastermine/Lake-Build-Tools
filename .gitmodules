@@ -1,0 +1,6 @@
+[submodule "lua"]
+	path = libs/lua
+	url = https://github.com/lua/lua.git
+[submodule "sol2"]
+	path = libs/sol
+	url = https://github.com/ThePhD/sol2.git
