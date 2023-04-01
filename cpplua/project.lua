@@ -11,7 +11,7 @@ local function create(lang)
         lnks = {},
     }
 
-    return setmetatable(temp, meta)
+    return setmetatable(temp, {__index = meta})
 end
 
 function meta:version(ver)
@@ -25,6 +25,7 @@ end
 
 function meta:build(out)
     for _, ln in ipairs(self.lnks) do
+        print(ln[1].src[1])
     end
 end
 

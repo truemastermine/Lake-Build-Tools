@@ -10,6 +10,7 @@ local lake = project("c++")
 lake:version("cxx17")
 
 lake:sourceDir("src", ".cpp")
+
 lake:includeDir("includes")
 lake:link(lua)
 
