@@ -29,10 +29,10 @@ int main() {
     lua["API"]["listDir"] = listDir;
 
     auto res = lua.do_file("cpplua/init.lua", sol::load_mode::text);
-    std::cout << (int)res.status() << "\n";
+    // std::cout << (int)res.status() << "\n";
 
     res = lua.do_file("lake.lua");
-    std::cout << (int)res.status() << "\n";
+    // std::cout << (int)res.status() << "\n";
 
     lua["execute"]();
 }

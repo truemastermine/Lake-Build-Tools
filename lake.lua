@@ -1,12 +1,12 @@
 lmake("1.0.0", "build")
 
 local lua = project("C")
+local lake = project("c++")
 
 lua:sourceDir("libs/lua/", ".c")
 lua:includeDir("libs/lua")
 
 
-local lake = project("c++")
 lake:version("cxx17")
 
 lake:sourceDir("src", ".cpp")

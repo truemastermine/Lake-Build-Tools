@@ -1,9 +1,11 @@
 local meta = {}
+local count = 0
 
 -- Create Project Data Structure
 --------------------------------
 local function create(lang)
     local temp = {
+        id = count,
         lang = lang,
         src = {},
         incs = {},
@@ -11,7 +13,8 @@ local function create(lang)
         lnks = {},
     }
 
-    return setmetatable(temp, {__index = meta})
+    count = count + 1
+    return setmetatable(temp, { __index = meta })
 end
 
 function meta:version(ver)
@@ -20,12 +23,24 @@ end
 -- Build
 --------
 
-local function StaticLib(project)
+local function buildLib(out, pro, t)
+    local incs = {};
+
+    for _, v in ipairs(pro.incs) do
+        table.insert(incs, "-I" .. v)
+    end
+
+    incs = table.concat(incs, " ")
+    local cmds = {}
+    for _, v in ipairs(pro.src) do
+        table.insert(cmds, "gcc " .. incs .. " -c " .. v)
+    end
+    print(table.concat(cmds, '\n'))
 end
 
 function meta:build(out)
     for _, ln in ipairs(self.lnks) do
-        print(ln[1].src[1])
+        buildLib(out, ln[1], ln[2])
     end
 end
 
