@@ -2,13 +2,17 @@
 #include <string_view>
 #include <optional>
 #include <vector>
+#include "sol/sol.hpp"
 
 namespace LBT {
+
+// struct Project{};
+
 namespace CPP {
 
-void* createCPPProject(std::string_view id);
-
 struct CPPProject;
+CPPProject createCPPProject(std::string_view id);
+void initSol(sol::state&);
 
 enum class LinkType : char {
     DEFAULT = 0,
