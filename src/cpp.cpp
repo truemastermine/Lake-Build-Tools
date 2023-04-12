@@ -39,16 +39,15 @@ static void buildProject(API::Project& p, std::string_view buildName) {
     // std::cout << pro.id << '\n';
 
     // INCLUDES
-    // std::vector<std::string_view> incs;
     std::string incs;
     for (auto& incDir : pro->incDirs) {
-        incs += " -i ";
+        incs += " -I ";
         incs += incDir;
     }
 
     // SOURCES
     for (auto& srcFile : pro->srcs) {
-        std::cout << "gcc -c " << srcFile << " -o " << buildName << incs << '\n';
+        std::cout << "g++ -c " << srcFile << " -o " << buildName << incs << '\n';
     }
 }
 
