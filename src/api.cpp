@@ -14,11 +14,11 @@ namespace API {
 
 std::map<std::string_view, API> apis;
 
-sol::optional<Project> createProject(std::string_view lang, sol::variadic_args args) {
+sol::optional<Project> createProject(std::string_view lang, std::optional<std::string_view> id) {
     if (apis.find(lang) == apis.end()) return sol::optional<Project>();
 
     Project pro{std::string(lang), nullptr};
-    apis[lang].cProject(pro, args);
+    apis[lang].cProject(pro, id.value_or(""));
     return pro;
 }
 

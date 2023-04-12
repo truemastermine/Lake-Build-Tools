@@ -9,8 +9,12 @@ namespace fs = std::filesystem;
 namespace LBT {
 namespace CPP {
 
-static void createCPPProject(API::Project& pro, const sol::variadic_args& args) {
-    pro.data = new CPPProject{.id = "Test"};
+static void createCPPProject(API::Project& pro, const std::string_view id) {
+    pro.data = new CPPProject{.cpp = true, .id = id};
+}
+
+static void createCProject(API::Project& pro, const std::string_view id) {
+    pro.data = new CPPProject{.cpp = false, .id = id};
 }
 
 static void addSource(API::Project& p, const std::string_view src) {
@@ -35,6 +39,7 @@ static void addLink(API::Project& p, API::Project& target, API::LinkType ty) {
 
 static void buildProject(API::Project& p, std::string_view buildName) {
     auto pro = (CPPProject*)p.data;
+    std::string_view bin = pro->cpp ? "g++ " : "gcc ";
     if (buildName.empty()) buildName = pro->id;
     // std::cout << pro.id << '\n';
 
@@ -55,7 +60,7 @@ static void buildProject(API::Project& p, std::string_view buildName) {
             throw "Expected File Not Found: " + srcFile;
         if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
 
-        std::cout << "g++ -c " << srcFile << " -o _build/"
+        std::cout << bin << "-c " << srcFile << " -o _build/"
                   << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
                   << '\n';
         srcs += " _build/";
@@ -63,7 +68,7 @@ static void buildProject(API::Project& p, std::string_view buildName) {
     }
 
     // FINAL COMPOLATION
-    std::cout << "g++ " << srcs << '\n';
+    std::cout << bin << srcs << '\n';
 }
 
 // void build(CPPProject& pro, sol::optional<std::string_view> buildName){
@@ -86,7 +91,7 @@ API::API CppAPI{.cProject = CPP::createCPPProject,
                 .linkPro = CPP::addLink,
                 .build = CPP::buildProject};
 
-API::API CAPI{.cProject = CPP::createCPPProject,
+API::API CAPI{.cProject = CPP::createCProject,
               .addSrc = CPP::addSource,
               .addIncDir = CPP::addIncDir,
               .linkPro = CPP::addLink,

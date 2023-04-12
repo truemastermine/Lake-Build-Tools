@@ -24,8 +24,8 @@ struct Link {
 };
 
 struct CPPProject {
-    std::string_view id;
     bool cpp = true;
+    std::string_view id;
     std::vector<Link> libs;
     std::vector<std::string> srcs;
     std::vector<std::string> incDirs;

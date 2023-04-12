@@ -21,7 +21,7 @@ struct Project {
 };
 
 struct API {
-    void (*cProject)(Project&, const sol::variadic_args&);
+    void (*cProject)(Project&, const std::string_view);
 
     // Source
     void (*addSrc)(Project&, const std::string_view);
