@@ -10,7 +10,7 @@ namespace LBT {
 namespace CPP {
 
 static void createCPPProject(API::Project& pro, const sol::variadic_args& args) {
-    pro.data = new CPPProject{.id="Test"};
+    pro.data = new CPPProject{.id = "Test"};
 }
 
 static void addSource(API::Project& p, const std::string_view src) {
@@ -45,10 +45,25 @@ static void buildProject(API::Project& p, std::string_view buildName) {
         incs += incDir;
     }
 
-    // SOURCES
+    // SOURCE OBJ FILES
+    std::string srcs;
     for (auto& srcFile : pro->srcs) {
-        std::cout << "g++ -c " << srcFile << " -o " << buildName << incs << '\n';
+        fs::path srcPath(srcFile);
+
+        // FS Checks
+        if (!(fs::exists(srcPath) && fs::is_regular_file(srcPath)))
+            throw "Expected File Not Found: " + srcFile;
+        if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
+
+        std::cout << "g++ -c " << srcFile << " -o _build/"
+                  << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
+                  << '\n';
+        srcs += " _build/";
+        srcs += srcPath.filename().replace_extension(".o").generic_string();
     }
+
+    // FINAL COMPOLATION
+    std::cout << "g++ " << srcs << '\n';
 }
 
 // void build(CPPProject& pro, sol::optional<std::string_view> buildName){
