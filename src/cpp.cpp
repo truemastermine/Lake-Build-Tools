@@ -37,7 +37,7 @@ static void addLink(API::Project& p, API::Project& target, API::LinkType ty) {
     pro->libs.emplace_back(Link{.pro = targ, .type = (unsigned char)ty});
 }
 
-static void buildLink(Link& lnk){
+static void buildLink(Link& lnk) {
     auto pro = lnk.pro;
     std::string_view bin = pro->cpp ? "g++ " : "gcc ";
     std::string_view buildName = pro->id;
@@ -51,20 +51,22 @@ static void buildLink(Link& lnk){
 
     // SOURCE TO OBJ
     std::string srcs;
-    for (auto& srcFile : pro->srcs){
+    for (auto& srcFile : pro->srcs) {
         fs::path srcPath(srcFile);
 
         // FS Checks
         if (!(fs::exists(srcPath) && fs::is_regular_file(srcPath)))
             throw "Expected File Not Found: " + srcFile;
-        if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
 
-        std::cout << bin << "-c " << srcFile << " -Wall -o " << API::buildDir //<< '/'
-                  << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
-                  << '\n';
         srcs += ' ';
         srcs += API::buildDir;
         srcs += srcPath.filename().replace_extension(".o").generic_string();
+
+        if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
+
+        std::cout << bin << "-c " << srcFile << " -Wall -o " << API::buildDir  //<< '/'
+                  << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
+                  << '\n';
     }
 
     std::cout << "ar rvs " << API::buildDir << buildName << ".a " << srcs << '\n';
@@ -78,7 +80,7 @@ static void buildProject(API::Project& p, std::string_view buildName) {
 
     // LINKS
     std::string lnks;
-    for (auto& link : pro->libs){
+    for (auto& link : pro->libs) {
         buildLink(link);
         lnks += " ";
         lnks += API::buildDir;
@@ -101,18 +103,20 @@ static void buildProject(API::Project& p, std::string_view buildName) {
         // FS Checks
         if (!(fs::exists(srcPath) && fs::is_regular_file(srcPath)))
             throw "Expected File Not Found: " + srcFile;
-        if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
 
-        std::cout << bin << "-c " << srcFile << " -Wall -o " << API::buildDir //<< '/'
-                  << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
-                  << '\n';
         srcs += ' ';
         srcs += API::buildDir;
         srcs += srcPath.filename().replace_extension(".o").generic_string();
+
+        if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
+
+        std::cout << bin << "-c " << srcFile << " -Wall -o " << API::buildDir  //<< '/'
+                  << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
+                  << '\n';
     }
 
     // FINAL COMPILATION
-    std::cout << bin << srcs << lnks << " -o " << API::buildDir << "LAKE" <<'\n';
+    std::cout << bin << srcs << lnks << " -o " << API::buildDir << "LAKE" << '\n';
 }
 
 }  // namespace CPP
