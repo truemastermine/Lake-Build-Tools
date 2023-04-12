@@ -30,7 +30,7 @@ struct API {
     void (*build)(Project&, const std::string_view);
 };
 
-extern std::map<std::string_view, API> apis;
+extern std::string buildDir;
 
 };  // namespace API
 }  // namespace LBT

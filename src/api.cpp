@@ -13,8 +13,18 @@ extern API::API CAPI;
 namespace API {
 
 std::map<std::string_view, API> apis;
+std::string buildDir = "_build/"; // TODO: Change to "build/" in release!
 
-sol::optional<Project> createProject(std::string_view lang, std::optional<std::string_view> id) {
+static void setupLake(std::string_view version, std::string_view build) {
+    // Build Dir
+    fs::path buildPath(build);
+    if (!fs::exists(buildPath)) fs::create_directory(buildPath);
+    if (!fs::is_directory(buildPath)) throw "Build path must be a directory!";
+    buildDir = fs::relative(buildPath).generic_string() + '/';
+}
+
+static sol::optional<Project> createProject(std::string_view lang,
+                                            std::optional<std::string_view> id) {
     if (apis.find(lang) == apis.end()) return sol::optional<Project>();
 
     Project pro{std::string(lang), nullptr};
@@ -29,7 +39,7 @@ static void addSource(Project& pro, const sol::variadic_args args) {
     }
 }
 
- static void addSrcDir(Project& pro, std::string_view ext, const sol::variadic_args args) {
+static void addSrcDir(Project& pro, std::string_view ext, const sol::variadic_args args) {
     std::vector<fs::path> files;
     auto addSrc = apis[pro.lang].addSrc;
 
@@ -55,7 +65,7 @@ static void addIncDir(Project& pro, const sol::variadic_args args) {
 }
 
 static void addLink(Project& pro, const sol::optional<std::variant<std::string_view, int>> t,
-             const sol::variadic_args args) {
+                    const sol::variadic_args args) {
     LinkType lt = LinkType::DEFAULT;
 
     if (t.has_value()) {
@@ -89,6 +99,7 @@ static void buildProject(Project& pro, sol::optional<std::string_view> buildName
 
 void initSol(sol::state& lua) {
     lua["project"] = LBT::API::createProject;
+    lua["lake"] = LBT::API::setupLake;
 
     auto ut = lua.new_usertype<Project>("ProjectMeta");
     ut["source"] = &addSource;

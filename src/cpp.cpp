@@ -60,15 +60,16 @@ static void buildProject(API::Project& p, std::string_view buildName) {
             throw "Expected File Not Found: " + srcFile;
         if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
 
-        std::cout << bin << "-c " << srcFile << " -o _build/"
+        std::cout << bin << "-c " << srcFile << " -o " << API::buildDir //<< '/'
                   << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
                   << '\n';
-        srcs += " _build/";
+        srcs += ' ';
+        srcs += API::buildDir;
         srcs += srcPath.filename().replace_extension(".o").generic_string();
     }
 
-    // FINAL COMPOLATION
-    std::cout << bin << srcs << '\n';
+    // FINAL COMPILATION
+    std::cout << bin << srcs << " -o " << API::buildDir << "LAKE" <<'\n';
 }
 
 // void build(CPPProject& pro, sol::optional<std::string_view> buildName){
