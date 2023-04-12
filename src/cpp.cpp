@@ -60,7 +60,7 @@ static void buildProject(API::Project& p, std::string_view buildName) {
             throw "Expected File Not Found: " + srcFile;
         if (fs::last_write_time(srcPath) < fs::last_write_time(srcPath)) continue;
 
-        std::cout << bin << "-c " << srcFile << " -o " << API::buildDir //<< '/'
+        std::cout << bin << "-c " << srcFile << " -Wall -o " << API::buildDir //<< '/'
                   << srcPath.filename().replace_extension(".o").generic_string() << " " << incs
                   << '\n';
         srcs += ' ';
@@ -71,18 +71,6 @@ static void buildProject(API::Project& p, std::string_view buildName) {
     // FINAL COMPILATION
     std::cout << bin << srcs << " -o " << API::buildDir << "LAKE" <<'\n';
 }
-
-// void build(CPPProject& pro, sol::optional<std::string_view> buildName){
-//     auto bn = buildName.value_or(pro.id);
-//     std::vector<std::string_view> cmds;
-//     for (auto& src : pro.srcs){
-//         cmds.emplace_back(std::string("g++ -I") + std::string(pro.incDirs[0])+"");\
-//         // std::cout << std::string("g++ -I") + std::string(pro.incDirs[0])+" "+src+ "-o outTemp
-//         -Wall -c" + "\n";
-//     }
-// }
-
-// CPPProject createCPPProject(std::string_view id) { return CPPProject{}; }
 
 }  // namespace CPP
 
