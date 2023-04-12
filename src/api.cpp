@@ -22,14 +22,14 @@ sol::optional<Project> createProject(std::string_view lang, sol::variadic_args a
     return pro;
 }
 
-void addSource(Project& pro, const sol::variadic_args args) {
+static void addSource(Project& pro, const sol::variadic_args args) {
     auto addSrc = apis[pro.lang].addSrc;
     for (auto& arg : args) {
         addSrc(pro, arg.get<std::string_view>());
     }
 }
 
-void addSrcDir(Project& pro, std::string_view ext, const sol::variadic_args args) {
+ static void addSrcDir(Project& pro, std::string_view ext, const sol::variadic_args args) {
     std::vector<fs::path> files;
     auto addSrc = apis[pro.lang].addSrc;
 
@@ -46,7 +46,7 @@ void addSrcDir(Project& pro, std::string_view ext, const sol::variadic_args args
     // apis[pro.lang].addSrcDir(pro, args);
 }
 
-void addIncDir(Project& pro, const sol::variadic_args args) {
+static void addIncDir(Project& pro, const sol::variadic_args args) {
     auto addInc = apis[pro.lang].addIncDir;
 
     for (auto& arg : args) {
@@ -54,13 +54,14 @@ void addIncDir(Project& pro, const sol::variadic_args args) {
     }
 }
 
-void addLink(Project& pro, const sol::optional<std::variant<std::string_view, int>> t,
+static void addLink(Project& pro, const sol::optional<std::variant<std::string_view, int>> t,
              const sol::variadic_args args) {
     LinkType lt = LinkType::DEFAULT;
 
     if (t.has_value()) {
         auto var = t.value();
         if (var.index()) {
+            lt = (LinkType)std::get<1>(var);
         } else {
             auto val = std::get<0>(var);
             if (val == "STATIC" || val == "static")
@@ -80,10 +81,10 @@ void addLink(Project& pro, const sol::optional<std::variant<std::string_view, in
     }
 }
 
-void buildProject(Project& pro, sol::optional<std::string_view> buildName) {
+static void buildProject(Project& pro, sol::optional<std::string_view> buildName) {
     auto bn = buildName.value_or("");
 
-    apis[pro.lang].build;
+    apis[pro.lang].build(pro, bn);
 }
 
 void initSol(sol::state& lua) {

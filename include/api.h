@@ -9,7 +9,7 @@ namespace API {
 
 void initSol(sol::state&);
 
-enum class LinkType : char {
+enum class LinkType : unsigned char {
     DEFAULT = 0,
     STATIC,
     SHARED

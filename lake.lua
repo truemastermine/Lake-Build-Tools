@@ -7,7 +7,7 @@ print(type(lua))
 print(lake == nil)
 print(type(lake))
 
-lua:sourceDir(".c", "libs/lua/")
+-- lua:sourceDir(".c", "libs/lua/")
 lua:includeDir("libs/lua")
 
 
@@ -17,4 +17,5 @@ lake:source("src/main.cpp", "src/cpp.cpp")
 lake:includeDir("includes")
 lake:link(lua)
 
--- lake:build("LakeBin.o")
+lake:build("LakeBin.o")
+-- lake:build()

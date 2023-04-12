@@ -12,21 +12,21 @@ namespace CPP {
 
 struct CPPProject;
 
-enum class LinkType : char {
-    DEFAULT = 0,
-    STATIC,
-    SHARED
-};
+// enum class LinkType : char {
+//     DEFAULT = 0,
+//     STATIC,
+//     SHARED
+// };
 
-struct Links {
+struct Link {
     CPPProject* pro;
-    LinkType type;
+    unsigned char type;
 };
 
 struct CPPProject {
     std::string_view id;
     bool cpp = true;
-    std::vector<Links> libs;
+    std::vector<Link> libs;
     std::vector<std::string> srcs;
     std::vector<std::string> incDirs;
 };
