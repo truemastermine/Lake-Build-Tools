@@ -11,8 +11,6 @@ namespace LBT {
 namespace CPP {
 
 struct CPPProject;
-CPPProject createCPPProject(std::string_view id);
-void initSol(sol::state&);
 
 enum class LinkType : char {
     DEFAULT = 0,
@@ -29,8 +27,8 @@ struct CPPProject {
     std::string_view id;
     bool cpp = true;
     std::vector<Links> libs;
-    std::vector<std::string_view> srcs;
-    std::vector<std::string_view> incDirs;
+    std::vector<std::string> srcs;
+    std::vector<std::string> incDirs;
 };
 
 }  // namespace CPP

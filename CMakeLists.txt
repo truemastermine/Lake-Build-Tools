@@ -47,6 +47,6 @@ target_include_directories(Lua PUBLIC libs/lua)
 
 # Lake
 project(LAKE)
-add_executable(LAKE src/main.cpp src/api.cpp)
+add_executable(LAKE src/main.cpp src/api.cpp src/cpp.cpp)
 target_include_directories(LAKE PRIVATE include libs/sol/include)
 target_link_libraries(LAKE PRIVATE Lua)

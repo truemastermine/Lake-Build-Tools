@@ -9,6 +9,12 @@ namespace API {
 
 void initSol(sol::state&);
 
+enum class LinkType : char {
+    DEFAULT = 0,
+    STATIC,
+    SHARED
+};
+
 struct Project {
     const std::string lang;
     void* data;
@@ -18,8 +24,10 @@ struct API {
     void (*cProject)(Project&, const sol::variadic_args&);
 
     // Source
-    void (*addSrc)(Project&, const sol::variadic_args&);
-    void (*addSrcDir)(Project&, const sol::variadic_args&);
+    void (*addSrc)(Project&, const std::string_view);
+    void (*addIncDir)(Project&, const std::string_view);
+    void (*linkPro)(Project& Self, Project& T, LinkType);
+    void (*build)(Project&, const std::string_view);
 };
 
 extern std::map<std::string_view, API> apis;

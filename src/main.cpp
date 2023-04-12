@@ -4,6 +4,7 @@
 #include <map>
 
 #include "apis/cpp.h"
+#include "api.h"
 #include "sol/sol.hpp"
 
 namespace fs = std::filesystem;
@@ -16,10 +17,9 @@ int main() {
     lua.open_libraries(sol::lib::base, sol::lib::io, sol::lib::math, sol::lib::os,
                        sol::lib::package, sol::lib::string, sol::lib::table);
 
-    LBT::apis["CPP"] = 10;
+    // LBT::API::apis["CPP"];
 
-    // LBT::CPP::initSol(lua);
-    lua["project"] = LBT::createProject;
+    LBT::API::initSol(lua);
 
     // lua["project"] = LBT::project;
 
@@ -31,6 +31,11 @@ int main() {
 
     auto res = lua.do_file("lake.lua");
     std::cout << (int)res.status() << "\n";
+
+    if ((bool)res.status()){
+        sol::error err = res;
+        std::cout << err.what() << '\n';
+    }
 
     lua["execute"]();
 }

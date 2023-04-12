@@ -5,7 +5,7 @@ lmake("1.0.0", "build") -- (required version, buildDir) major.minor.patch.indev
 local lib = project("C++") -- (language)
 
 lib:source("libs/lib/main.cpp", "libs/lib/optional.cpp") -- (source files...)
-lib:sourceDir("libs/lib/src", ".cpp") -- (dir, extension)
+lib:sourceDir(".cpp", "libs/lib/src") -- (dir, extension)
 lib:includeDir("libs/lib/includes") -- (include dir...)
 lib:define("STATIC_LIB") -- (key, value)
 
@@ -14,7 +14,7 @@ myPro:version("cxx17") -- (language version)
 
 eval("echo 'Hello, World!'") -- (cmd, continueOnErr)
 
-myPro:sourceDir("src", ".cpp")
+myPro:sourceDir(".cpp", "src")
 myPro:includeDir("includes")
 myPro:link("static", lib) -- (type?, project...)
 
